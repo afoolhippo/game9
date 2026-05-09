@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>苗字苗字yeah</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <section id="titleScreen" class="screen active">
+    <div class="paper"></div>
+
+    <img id="titleLogo" src="title.png" alt="苗字苗字yeah">
+
+    <p class="ruleText">
+      よまれた苗字を探してタップ！<br>
+      お手つきするとコンボ切れ！
+    </p>
+
+    <button id="startBtn">TAP TO START</button>
+  </section>
+
+  <section id="gameScreen" class="screen">
+    <div class="paper"></div>
+
+    <div class="topUi">
+      <div class="comboBox">
+        COMBO <span id="comboText">0</span>
+      </div>
+    </div>
+
+    <div class="gaugeWrap">
+      <div id="timeGauge"></div>
+    </div>
+
+    <div id="readerBox">
+      <img id="readerImg" src="man.png" alt="印鑑くん">
+      <div id="speechBubble">
+        <span id="callText">待機中…</span>
+      </div>
+    </div>
+
+    <div id="messageText"></div>
+
+    <div id="cardArea"></div>
+  </section>
+
+  <section id="resultScreen" class="screen">
+    <div class="paper"></div>
+
+    <h2 id="resultTitle">苗字名人！</h2>
+
+    <div class="resultBox">
+      <p>SCORE <span id="scoreText">0</span></p>
+      <p>MAX COMBO <span id="maxComboText">0</span></p>
+      <p>CLEAR <span id="clearText">0/16</span></p>
+    </div>
+
+    <button id="retryBtn">タイトルへ</button>
+  </section>
+
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

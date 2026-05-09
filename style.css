@@ -1,0 +1,339 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #d8cde8;
+  color: #2b2233;
+  font-family: "Yusei Magic", sans-serif;
+}
+
+#app {
+  width: 100vw;
+  height: 100svh;
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.screen {
+  position: relative;
+  display: none;
+  width: min(430px, 100vw);
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: 16px 12px;
+}
+
+.screen.active {
+  display: block;
+}
+
+.paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), transparent 25%),
+    radial-gradient(circle at 80% 60%, rgba(255,255,255,0.15), transparent 25%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.03),
+      rgba(255,255,255,0.03) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    #d8cde8;
+}
+
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image: radial-gradient(#000 0.7px, transparent 0.7px);
+  background-size: 8px 8px;
+}
+
+#titleScreen {
+  text-align: center;
+  padding-top: 72px;
+}
+
+#titleLogo {
+  position: relative;
+  z-index: 1;
+  width: 92%;
+  max-width: 360px;
+  display: block;
+  margin: 0 auto 26px;
+  image-rendering: pixelated;
+}
+
+.ruleText {
+  position: relative;
+  z-index: 1;
+  margin-top: 24px;
+  margin-bottom: 44px;
+  font-size: 20px;
+  line-height: 1.7;
+}
+
+#startBtn,
+#retryBtn {
+  position: relative;
+  z-index: 1;
+  border: 3px solid #2b2233;
+  background: #f5efe4;
+  color: #2b2233;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: inherit;
+  box-shadow: 4px 4px 0 rgba(43,34,51,0.25);
+}
+
+#startBtn:active,
+#retryBtn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(43,34,51,0.25);
+}
+
+.topUi {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.comboBox {
+  background: rgba(255,255,255,0.45);
+  border: 2px solid #2b2233;
+  padding: 6px 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.gaugeWrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 18px;
+  border: 3px solid #2b2233;
+  background: rgba(255,255,255,0.4);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+#timeGauge {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #6c476d, #a5657f);
+}
+
+#readerBox {
+  position: relative;
+  z-index: 2;
+  width: 96%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#readerImg {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+#speechBubble {
+  position: relative;
+  flex: 1;
+  min-height: 74px;
+  background: #f5efe4;
+  border: 4px solid #2b2233;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-shadow: 5px 5px 0 rgba(43,34,51,0.25);
+}
+
+#speechBubble::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 30px;
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-right: 18px solid #2b2233;
+}
+
+#speechBubble::after {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 35px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 11px solid #f5efe4;
+}
+
+#callText {
+  font-size: 36px;
+  font-family: "Yuji Syuku", serif;
+  color: #1d1724;
+}
+
+#messageText {
+  position: relative;
+  z-index: 2;
+  height: 28px;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #7a2e46;
+}
+
+#cardArea {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: calc(100svh - 255px);
+  margin-top: 4px;
+}
+
+.card {
+  position: absolute;
+  width: 72px;
+  height: 50px;
+  background: #f5efe4;
+  border: 3px solid #2b2233;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  font-family: "Yuji Syuku", serif;
+  color: #1d1724;
+  box-shadow: 4px 4px 0 rgba(43,34,51,0.2);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.card.hit {
+  animation: hitCard 0.18s forwards;
+}
+
+.card.miss {
+  animation: missCard 0.16s;
+}
+
+@keyframes hitCard {
+  0% {
+    transform: scale(1) rotate(var(--rot));
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.28) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+@keyframes missCard {
+  0%,100% {
+    transform: rotate(var(--rot));
+  }
+
+  50% {
+    transform: rotate(var(--rot)) translateX(-5px);
+  }
+}
+
+#resultScreen {
+  text-align: center;
+  padding-top: 78px;
+}
+
+#resultTitle {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 22px;
+  font-size: 44px;
+  font-family: "Yuji Syuku", serif;
+}
+
+.resultBox {
+  position: relative;
+  z-index: 2;
+  width: 88%;
+  margin: 0 auto 34px;
+  background: #f5efe4;
+  border: 4px solid #2b2233;
+  padding: 20px;
+  box-shadow: 5px 5px 0 rgba(43,34,51,0.25);
+}
+
+.resultBox p {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+@media (max-height: 720px) {
+  #titleScreen {
+    padding-top: 48px;
+  }
+
+  #titleLogo {
+    max-width: 310px;
+    margin-bottom: 18px;
+  }
+
+  .ruleText {
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+
+  #readerImg {
+    width: 78px;
+    height: 78px;
+  }
+
+  #callText {
+    font-size: 30px;
+  }
+
+  .card {
+    width: 68px;
+    height: 46px;
+    font-size: 19px;
+  }
+
+  #cardArea {
+    height: calc(100svh - 230px);
+  }
+}
