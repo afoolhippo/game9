@@ -25,7 +25,7 @@ const resultCharacter = document.getElementById("resultCharacter");
 const resultComment = document.getElementById("resultComment");
 
 const GAME_URL = "https://afoolhippo.github.io/game9/";
-const HOME_URL = "https://afoolhippo.github.io/home/";
+const HOME_URL = "https://afoolhippo.github.io/home/?skipTitle=1";
 
 const bgm = new Audio("bgm.mp3");
 const startSe = new Audio("start.mp3");
