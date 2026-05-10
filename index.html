@@ -2,39 +2,72 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
   <title>苗字苗字yeah</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
 <div id="app">
 
+  <!-- TITLE -->
   <section id="titleScreen" class="screen active">
+
     <div class="paper"></div>
 
-    <img id="titleLogo" src="title.png" alt="苗字苗字yeah">
+    <img
+      id="titleLogo"
+      src="title.png"
+      alt="苗字苗字yeah"
+    >
 
     <p class="ruleText">
-      よまれた苗字を探してタップ！
+      よまれた苗字を探してタップ！<br>
+      連続正解でコンボを目指せ！
     </p>
 
-    <button id="startBtn">TAP TO START</button>
+    <button id="startBtn">
+      タップしてスタート
+    </button>
+
   </section>
 
+  <!-- GAME -->
   <section id="gameScreen" class="screen">
+
     <div class="paper"></div>
 
     <div class="topUi">
+
+      <button id="backBtn">
+        タイトルへ戻る
+      </button>
+
       <div class="comboBox">
-        COMBO <span id="comboText">0</span>
+        COMBO
+        <span id="comboText">0</span>
       </div>
+
     </div>
 
     <div class="gaugeWrap">
@@ -42,33 +75,88 @@
     </div>
 
     <div id="readerBox">
-      <img id="readerImg" src="man.png" alt="印鑑くん">
+
+      <img
+        id="readerImg"
+        src="man.png"
+        alt="印鑑くん"
+      >
+
       <div id="speechBubble">
-        <span id="callText">待機中…</span>
+
+        <span id="callText">
+          待機中…
+        </span>
+
       </div>
+
     </div>
 
     <div id="messageText"></div>
 
     <div id="cardArea"></div>
+
   </section>
 
+  <!-- RESULT -->
   <section id="resultScreen" class="screen">
+
     <div class="paper"></div>
 
-    <h2 id="resultTitle">苗字名人！</h2>
+    <h2 id="resultTitle">
+      苗字名人！
+    </h2>
+
+    <img
+      id="resultCharacter"
+      src="man_good.png"
+      alt="結果キャラ"
+    >
+
+    <p id="resultComment">
+      なかなかの苗字さばき！
+    </p>
 
     <div class="resultBox">
-      <p>SCORE <span id="scoreText">0</span></p>
-      <p>MAX COMBO <span id="maxComboText">0</span></p>
-      <p>CLEAR <span id="clearText">0/16</span></p>
+
+      <p>
+        16枚中
+        <span id="clearText">0枚獲得！</span>
+      </p>
+
+      <p>
+        最大
+        <span id="maxComboText">0コンボ</span>
+      </p>
+
+      <p>
+        獲得点
+        <span id="scoreText">0</span>
+      </p>
+
     </div>
 
-    <button id="retryBtn">タイトルへ</button>
+    <div class="resultButtons">
+
+      <button id="shareBtn">
+        Xでシェア
+      </button>
+
+      <button id="retryBtn">
+        もう1回遊ぶ
+      </button>
+
+      <button id="homeBtn">
+        カバゲーセンへ
+      </button>
+
+    </div>
+
   </section>
 
 </div>
 
 <script src="game.js"></script>
+
 </body>
 </html>

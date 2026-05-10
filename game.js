@@ -3,7 +3,10 @@ const gameScreen = document.getElementById("gameScreen");
 const resultScreen = document.getElementById("resultScreen");
 
 const startBtn = document.getElementById("startBtn");
+const backBtn = document.getElementById("backBtn");
 const retryBtn = document.getElementById("retryBtn");
+const shareBtn = document.getElementById("shareBtn");
+const homeBtn = document.getElementById("homeBtn");
 
 const cardArea = document.getElementById("cardArea");
 
@@ -16,7 +19,13 @@ const timeGauge = document.getElementById("timeGauge");
 const scoreText = document.getElementById("scoreText");
 const maxComboText = document.getElementById("maxComboText");
 const clearText = document.getElementById("clearText");
+
 const resultTitle = document.getElementById("resultTitle");
+const resultCharacter = document.getElementById("resultCharacter");
+const resultComment = document.getElementById("resultComment");
+
+const GAME_URL = "https://afoolhippo.github.io/game9/";
+const HOME_URL = "https://afoolhippo.github.io/home/";
 
 const bgm = new Audio("bgm.mp3");
 const startSe = new Audio("start.mp3");
@@ -61,6 +70,7 @@ const fakeNames = [
 
 const LAST_LIMIT_MS = 3000;
 const BEFORE_NEXT_MARGIN_MS = 120;
+const GAME_END_TIME = 39.5;
 
 let currentIndex = 0;
 let currentTarget = "";
@@ -81,7 +91,10 @@ let roundStartTime = 0;
 let roundLimitMs = 3000;
 
 function showScreen(screen) {
-  [titleScreen, gameScreen, resultScreen].forEach(s => s.classList.remove("active"));
+  [titleScreen, gameScreen, resultScreen].forEach((s) => {
+    s.classList.remove("active");
+  });
+
   screen.classList.add("active");
 }
 
@@ -91,9 +104,23 @@ function shuffle(array) {
 
 function playSe(audio) {
   const se = audio.cloneNode();
+
   se.volume = audio.volume;
   se.currentTime = 0;
+
   se.play().catch(() => {});
+}
+
+function stopGameAudioAndTimers() {
+  accepting = false;
+  gameRunning = false;
+
+  clearTimeout(timerId);
+  cancelAnimationFrame(syncId);
+  cancelAnimationFrame(gaugeId);
+
+  bgm.pause();
+  bgm.currentTime = 0;
 }
 
 function startGame() {
@@ -138,7 +165,7 @@ function createCards() {
   cardArea.innerHTML = "";
 
   const names = shuffle([
-    ...sequence.map(item => item.name),
+    ...sequence.map((item) => item.name),
     ...fakeNames
   ]);
 
@@ -148,8 +175,10 @@ function createCards() {
   const areaWidth = cardArea.clientWidth;
   const areaHeight = cardArea.clientHeight;
 
-  const cardW = window.innerHeight <= 720 ? 68 : 72;
-  const cardH = window.innerHeight <= 720 ? 46 : 50;
+  const isSmallHeight = window.innerHeight <= 720;
+
+  const cardW = isSmallHeight ? 68 : 72;
+  const cardH = isSmallHeight ? 46 : 50;
 
   const cellW = areaWidth / cols;
   const cellH = areaHeight / rows;
@@ -164,22 +193,22 @@ function createCards() {
     const col = index % cols;
     const row = Math.floor(index / cols);
 
-    const offsetX = (Math.random() * 18) - 9;
-    const offsetY = (Math.random() * 16) - 8;
+    const offsetX = Math.random() * 18 - 9;
+    const offsetY = Math.random() * 16 - 8;
 
     const x =
-      (col * cellW)
-      + (cellW / 2)
-      - (cardW / 2)
-      + offsetX;
+      col * cellW +
+      cellW / 2 -
+      cardW / 2 +
+      offsetX;
 
     const y =
-      (row * cellH)
-      + (cellH / 2)
-      - (cardH / 2)
-      + offsetY;
+      row * cellH +
+      cellH / 2 -
+      cardH / 2 +
+      offsetY;
 
-    const rot = (Math.random() * 16) - 8;
+    const rot = Math.random() * 16 - 8;
 
     card.style.left = `${Math.max(0, Math.min(x, areaWidth - cardW))}px`;
     card.style.top = `${Math.max(0, Math.min(y, areaHeight - cardH))}px`;
@@ -187,7 +216,9 @@ function createCards() {
     card.style.setProperty("--rot", `${rot}deg`);
     card.style.transform = `rotate(${rot}deg)`;
 
-    card.addEventListener("click", () => tapCard(card));
+    card.addEventListener("click", () => {
+      tapCard(card);
+    });
 
     cardArea.appendChild(card);
   });
@@ -197,7 +228,7 @@ function syncLoop() {
   if (!gameRunning) return;
 
   if (currentIndex >= sequence.length) {
-    if (bgm.currentTime >= 39.5 || bgm.ended) {
+    if (bgm.currentTime >= GAME_END_TIME || bgm.ended) {
       finishGame();
       return;
     }
@@ -225,7 +256,7 @@ function getRoundLimitMs() {
 
   return Math.max(
     900,
-    ((next.time - current.time) * 1000) - BEFORE_NEXT_MARGIN_MS
+    (next.time - current.time) * 1000 - BEFORE_NEXT_MARGIN_MS
   );
 }
 
@@ -236,6 +267,7 @@ function startRound() {
   }
 
   currentTarget = sequence[currentIndex].name;
+
   callText.textContent = `${currentTarget}！`;
   messageText.textContent = "";
 
@@ -300,26 +332,27 @@ function tapCard(card) {
       nextRound();
     }, 180);
 
-  } else {
-    combo = 0;
-
-    comboText.textContent = combo;
-    messageText.textContent = "お手つき！";
-
-    playSe(missSe);
-
-    card.classList.add("miss");
-
-    setTimeout(() => {
-      card.classList.remove("miss");
-    }, 180);
+    return;
   }
+
+  combo = 0;
+  comboText.textContent = combo;
+  messageText.textContent = "お手つき！";
+
+  playSe(missSe);
+
+  card.classList.add("miss");
+
+  setTimeout(() => {
+    card.classList.remove("miss");
+  }, 180);
 }
 
 function miss(text) {
   combo = 0;
   comboText.textContent = combo;
   messageText.textContent = text;
+
   playSe(missSe);
 }
 
@@ -348,35 +381,60 @@ function finishGame() {
 
   playSe(resultSe);
 
+  clearText.textContent = `${clearCount}枚獲得！`;
+  maxComboText.textContent = `${maxCombo}コンボ`;
   scoreText.textContent = score;
-  maxComboText.textContent = maxCombo;
-  clearText.textContent = `${clearCount}/16`;
 
   if (clearCount === 16) {
-    resultTitle.textContent = "全国制覇！";
-  } else if (clearCount >= 12) {
+    resultTitle.textContent = "苗字マスター！";
+    resultComment.textContent = "すべての苗字を取りきった！";
+    resultCharacter.src = "man_happy.png";
+  } else if (clearCount >= 10) {
     resultTitle.textContent = "苗字名人！";
-  } else if (clearCount >= 8) {
-    resultTitle.textContent = "カルタ中級者";
+    resultComment.textContent = "なかなかの苗字さばき！";
+    resultCharacter.src = "man_good.png";
   } else {
-    resultTitle.textContent = "修行不足";
+    resultTitle.textContent = "お手つき修行中";
+    resultComment.textContent = "次はもっと取れるはず！";
+    resultCharacter.src = "man_bad.png";
   }
 
   showScreen(resultScreen);
 }
 
+function shareResult() {
+  const text =
+`苗字カルタ、何枚取れる？🖌️
+
+目指せコンプリート！
+16枚中${clearCount}枚正解！
+
+無料ブラウザゲーム
+「苗字苗字yeah」
+${GAME_URL}
+
+#苗字苗字yeah #カバゲーセン`;
+
+  const shareUrl =
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
 startBtn.addEventListener("click", startGame);
 
-retryBtn.addEventListener("click", () => {
-  accepting = false;
-  gameRunning = false;
-
-  clearTimeout(timerId);
-  cancelAnimationFrame(syncId);
-  cancelAnimationFrame(gaugeId);
-
-  bgm.pause();
-  bgm.currentTime = 0;
-
+backBtn.addEventListener("click", () => {
+  stopGameAudioAndTimers();
   showScreen(titleScreen);
+});
+
+retryBtn.addEventListener("click", () => {
+  stopGameAudioAndTimers();
+  showScreen(titleScreen);
+});
+
+shareBtn.addEventListener("click", shareResult);
+
+homeBtn.addEventListener("click", () => {
+  window.location.href = HOME_URL;
 });
