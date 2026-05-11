@@ -438,3 +438,11 @@ shareBtn.addEventListener("click", shareResult);
 homeBtn.addEventListener("click", () => {
   window.location.href = HOME_URL;
 });
+
+const titleLogo =
+  document.getElementById("titleLogo");
+
+titleLogo.addEventListener(
+  "click",
+  startGame
+);
